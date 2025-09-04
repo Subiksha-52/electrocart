@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>API Endpoint Test</h1>
+    <button onclick="testAuthEndpoint()">Test Auth Endpoint</button>
+    <button onclick="testOrdersEndpoint()">Test Orders Endpoint</button>
+    <div id="result"></div>
+
+    <script>
+        function testAuthEndpoint() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">No token found. Please login first.</p>';
+                return;
+            }
+
+            axios.get('http://localhost:5000/api/auth/me', {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            .then(response => {
+                document.getElementById('result').innerHTML = `
+                    <p style="color: green;">✅ Auth endpoint working!</p>
+                    <pre>${JSON.stringify(response.data, null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = `
+                    <p style="color: red;">❌ Auth endpoint failed</p>
+                    <pre>${error.response ? JSON.stringify(error.response.data, null, 2) : error.message}</pre>
+                `;
+            });
+        }
+
+        function testOrdersEndpoint() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">No token found. Please login first.</p>';
+                return;
+            }
+
+            // First get user ID from auth endpoint
+            axios.get('http://localhost:5000/api/auth/me', {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            .then(userResponse => {
+                const userId = userResponse.data._id;
+                return axios.get(`http://localhost:5000/api/orders/user?userId=${userId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+            })
+            .then(response => {
+                document.getElementById('result').innerHTML = `
+                    <p style="color: green;">✅ Orders endpoint working!</p>
+                    <pre>${JSON.stringify(response.data, null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = `
+                    <p style="color: red;">❌ Orders endpoint failed</p>
+                    <pre>${error.response ? JSON.stringify(error.response.data, null, 2) : error.message}</pre>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
