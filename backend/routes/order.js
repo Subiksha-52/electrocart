@@ -137,6 +137,7 @@ router.get('/:orderId/tracking', auth, async (req, res) => {
       statusHistory: order.statusHistory,
       shipping: order.shipping,
       items: order.items,
+      total: order.grandTotal,
       createdAt: order.createdAt,
       estimatedDelivery: order.shipping.estimatedDelivery
     };
@@ -330,6 +331,47 @@ router.get('/:orderId/history', auth, async (req, res) => {
     });
   } catch (err) {
     console.error('Get order history error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add this before module.exports
+
+// Get order sales statistics (protected)
+router.get('/stats', auth, async (req, res) => {
+  try {
+    // Aggregate total revenue and total orders
+    const totalOrders = await Order.countDocuments();
+    const totalRevenueAgg = await Order.aggregate([
+      { $group: { _id: null, totalRevenue: { $sum: "$total" } } }
+    ]);
+    const totalRevenue = totalRevenueAgg[0]?.totalRevenue || 0;
+
+    // Aggregate monthly revenue for the last 12 months
+    const now = new Date();
+    const lastYear = new Date(now.getFullYear() - 1, now.getMonth() + 1, 1);
+    const monthlyRevenueAgg = await Order.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $group: {
+          _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+          monthlyRevenue: { $sum: "$total" }
+        }
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } }
+    ]);
+
+    // Calculate average order value
+    const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+    res.json({
+      totalOrders,
+      totalRevenue,
+      monthlyRevenue: monthlyRevenueAgg,
+      averageOrderValue: avgOrderValue
+    });
+  } catch (err) {
+    console.error('Get order stats error:', err);
     res.status(500).json({ error: err.message });
   }
 });

@@ -1,36 +1,59 @@
-# Frontend Cart Functionality Enhancement Plan
+# Flipkart UI/UX Redesign and Feature Enhancement Plan
 
-## Tasks to Complete:
+## Home Page
+- [ ] Redesign layout with category menu below navbar
+  - [ ] Create category menu component with icons and labels
+  - [ ] Integrate category menu below NavBar
+  - [ ] Make category menu responsive for mobile
+- [ ] Add banners and product carousels
+  - [ ] Create banner carousel component with auto-scroll
+  - [ ] Add product carousels for deals and categories
+  - [ ] Make carousels swipeable on mobile
+- [ ] Add localization support
+  - [ ] Integrate i18n library (e.g. react-i18next)
+  - [ ] Add language selector in NavBar
+  - [ ] Localize static texts on homepage
 
-### 1. Authentication Checks for Cart Actions
-- [x] Add authentication check to "Buy Now" button in ProductDetails.js
-- [x] "Add to Cart" button already has authentication check
+## Product Listing
+- [ ] Add advanced filters (multi-select, price range, brand, ratings)
+- [ ] Add sorting options
+- [ ] Improve product card UI
 
-### 2. Modern Cart Sidebar Implementation
-- [x] Create CartSidebar component
-- [x] Create CartSidebar.css for styling
-- [x] Integrate CartSidebar into main layout (App.js)
-- [x] Add toggle functionality to show/hide cart sidebar
-- [x] Update cart items dynamically when items are added/removed
+## Product Details
+- [ ] Refine image gallery and zoom
+- [ ] Enhance reviews section with ratings breakdown
+- [ ] Add wishlist and share enhancements
 
-### 3. NavBar Cart Counter
-- [x] Update NavBar to show cart item count badge
-- [x] Make cart icon clickable to toggle sidebar
+## Cart Page
+- [ ] Add saved for later, coupon code, estimated delivery
+- [ ] Improve cart item UI
 
-### 4. Server Integration
-- [ ] Ensure server is restarted to pick up cart route authentication changes
-- [ ] Test that cart routes require authentication
+## Checkout
+- [ ] Improve form layout and payment options UI
+- [ ] Add order summary enhancements
 
-## Current Progress:
-- ✅ Authentication checks implemented for both "Add to Cart" and "Buy Now" buttons
-- ✅ CartSidebar component created with basic styling
-- ✅ Integrated CartSidebar into App.js
-- ✅ Updated NavBar to include cart toggle button
-- ✅ Added cart counter badge to NavBar
-- ⏳ Need to ensure server is using updated cart routes
-- ⏳ Need to test the complete flow
+## Order Tracking
+- [ ] Improve timeline UI and order details
 
-## Next Steps:
-1. Test the cart sidebar functionality
-2. Ensure server authentication is working for cart routes
-3. Test the complete user flow
+## User Dashboard
+- [ ] Enhance charts and stats UI
+- [ ] Add wishlist and order management improvements
+
+## Admin Panel
+- [ ] Refine UI for better usability and Flipkart-like design
+- [ ] Add missing management features if any
+
+## Shared Components
+- [ ] Update NavBar, Footer, and other shared components for consistency
+
+## Styles
+- [ ] Update global and page-specific styles for responsiveness and performance
+
+## Testing
+- [ ] Thoroughly test all pages and flows after updates
+
+## Next Steps
+- Break down tasks into detailed steps
+- Implement changes incrementally
+- Test thoroughly
+- Final review and polish
